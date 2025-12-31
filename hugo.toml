@@ -1,0 +1,101 @@
+baseURL = 'https://mirikaryu.github.io/'
+languageCode = 'zh-cn'
+title = "Mirika's Blog"
+copyright = "Mirika"
+
+enableRobotsTXT = true
+
+hasCJKLanguage = true
+
+[module]
+	[[module.imports]]
+		path = 'github.com/CaiJimmy/hugo-theme-stack/v3'
+
+[params]
+	description = "Garbage dump"
+	favicon = '/favicon.svg'
+
+	[params.widgets]
+		[[params.widgets.homepage]]
+			type = "search"
+
+		[[params.widgets.homepage]]
+			type = "archives"
+			[params.widgets.homepage.params]
+				limit = 5
+
+		[[params.widgets.homepage]]
+			type = "categories"
+			[params.widgets.homepage.params]
+				limit = 10
+
+		[[params.widgets.homepage]]
+			type = "tag-cloud"
+			[params.widgets.homepage.params]
+				limit = 10
+
+		[[params.widgets.page]]
+			type = "toc"
+
+	[params.sidebar]
+		compact = false
+		emoji = "🎀"
+		subtitle = "Tell me, what scares you."
+		avatar = { enabled = true, local = true, src = "img/avatar.jpg" }
+
+	[params.article]
+		math = true
+		license = { enabled = true }
+
+	[params.footer]
+		since = 2025
+
+	[params.imageProcessing.cover]
+		enabled = false
+	[params.imageProcessing.content]
+		enabled = false
+
+[menu]
+	[[menu.social]]
+		identifier = "github"
+		name = "GitHub"
+		url = "https://github.com/MirikaRyu"
+		weight = 1
+		params = { icon = "brand-github" }
+	
+	[[menu.social]]
+		identifier = "email"
+		name = "Email"
+		url = "mailto:Mirika_Ryu@outlook.com"
+		weight = 2
+		params = { icon = "mail" }
+
+	[[menu.social]]
+		identifier = "rss"
+		name = "RSS"
+		url = "/index.xml"
+		weight = 3
+		params = { icon = "rss" }
+
+[related]
+	includeNewer = true
+	threshold = 60
+	toLower = false
+	
+	[[related.indices]]
+		name = "tags"
+		weight = 100
+
+	[[related.indices]]
+		name = "categories"
+		weight = 200
+
+[pagination]
+	pagerSize = 5
+
+[markup]
+	[markup.goldmark.renderer]
+		unsafe = true
+
+[comments]
+	enabled = false

@@ -1,0 +1,15 @@
+/* Add round corner to posts' icon */
+.article-image > img {
+    border-radius: 10px;
+}
+
+/* Add round corner to categories's icon */
+.section-image > img {
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Fix the large gap between paragraph and list */
+p + ul, p + ol {
+    margin-top: -20px;
+}
