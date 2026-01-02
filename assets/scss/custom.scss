@@ -1,15 +1,28 @@
 /* Add round corner to posts' icon */
-.article-image > img {
+.article-image>img {
     border-radius: 10px;
 }
 
 /* Add round corner to categories's icon */
-.section-image > img {
+.section-image>img {
     object-fit: cover;
     border-radius: 10px;
 }
 
 /* Fix the large gap between paragraph and list */
-p + ul, p + ol {
+p+ul,
+p+ol {
     margin-top: -20px;
+}
+
+/* Make TOC more compact */
+.widget--toc #TableOfContents li {
+    margin: 10px 0 10px 20px;
+    padding: 5px 0 5px 5px;
+}
+
+.right-sidebar.sticky {
+    min-width: 20%;
+    max-width: 22%;
+    width: fit-content;
 }
