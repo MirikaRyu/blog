@@ -26,3 +26,19 @@ p+ol {
     max-width: 22%;
     width: fit-content;
 }
+
+/* Make CodeBlock more compact */
+.article-content p+pre,
+.article-content p+.highlight {
+    margin-top: -16px;
+}
+
+.article-content p+blockquote {
+    margin-top: -16px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.article-content pre {
+    tab-size: 4;
+}

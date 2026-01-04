@@ -96,6 +96,8 @@ hasCJKLanguage = true
 [markup]
 	[markup.goldmark.renderer]
 		unsafe = true
+	[markup.highlight]
+		noClasses = false
 
 [comments]
 	enabled = false
