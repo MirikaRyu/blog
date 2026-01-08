@@ -35,7 +35,7 @@ nvme0n1                              232.9G
   └─Root-windows   btrfs                 4G                
 ```
 ~~三块盘完美符合Memory Hierarchy~~<br>
-在这种磁盘布局下很难在不失灵活性的同时单独安装 Windows。
+在这种磁盘布局下很难在不失灵活性的同时单独安装Windows。
 
 在继续之前先对照一下平台配置：
 - CPU: AMD Ryzen 9 9900X (24)
@@ -57,7 +57,7 @@ nvme0n1                              232.9G
 VFIO PCI设备直通和硬件平台本身的联系非常密切，请一定根据**你的硬件配置**选择应该采用哪些步骤、如何配置。
 
 如果你是按照我接下来的方法配置的Windows Guest，请**绝对不要**在Windows中开启内核隔离/Hyper-V等依赖虚拟化的功能，
-否则重启后会卡在启动界面无法进入Greeter。<br>
+否则重启后可能会卡在启动界面无法进入Greeter。<br>
 ~~如果你能在WinRE中挂载分区修改注册表那可以试试~~
 
 虽然虚拟机到最后确实是跑在一个headless的Arch Linux上的，但是在安装Windows时由于没有显卡驱动所以可能需要使用QEMU的图形后端
@@ -119,7 +119,7 @@ CPU拓扑和内存如果没有什么性能需求随便分配即可，这边留�
 不过按理说AMD不会像隔壁一样禁止你在虚拟机里用他的GPU，那是什么原因呢🤔？留到[显卡直通](#gpu-直通)的时候再讲好了（
 
 **Hints:**
-- 根据 ArchWiki，自 Windows 10 1803 版本及以后需要在配置内核模块参数`kvm.ignore_msrs=1`和`kvm.report_ignored_msrs=0`以防止蓝屏。<br>
+- 根据 ArchWiki，自Windows 10 1803版本及以后需要在配置内核模块参数`kvm.ignore_msrs=1`和`kvm.report_ignored_msrs=0`以防止蓝屏。<br>
 但在我这边暂未出现该情况，如有需要可以添加。
 
 ## UEFI 和 TPM2
@@ -154,11 +154,11 @@ QEMU中的设置：
 前两行指定了UEFI固件和存储设置的NVRAM文件。如果你希望使用secure boot，
 那么第一个UEFI固件必须选择带secboot字样的文件，这个在不同发行版之间的名字差别不大。<br>
 但对于第二个NVRAM模板文件，不同发行版之间的差异较大。如果你是Arch Linux用户，那么请参阅后面的[安全启动](#安全启动)这一小节；
-如果你使用Fedora，那么应该能够找到一个enroll了微软证书的secboot NVRAM模板，直接拷贝后使用即可开启secboot.
+如果你使用Fedora，那么应该能够找到一个enroll了微软证书的secboot NVRAM模板，直接拷贝后使用即可开启secboot。
 
 `fw_cfg`打开固件对于大于4G地址空间的解码支持，edk2面板中没有提供此入口，用于下文的显卡直通，不过目前感觉没啥卵用。
 
-接下来的几行关闭了系统对于suspend(S3)和hibernate(S4)的支持以防Windows睡死，并将客户机的RTC置为local time。
+接下来的几行关闭了系统对于suspend(S3)和hibernate(S4)的支持以防Windows睡死，并将客户机的RTC置为localtime。
 
 ## PCIe 拓扑
 本来只是想着能把设备连上就行，结果中间出了一堆问题，因此在解决问题的同时顺便学习了一下PCIe。
@@ -382,7 +382,8 @@ table ip6 nat {
 	}
 }
 ```
-如果原来的文件中包含一些防火墙之类的默认配置，请根据需求决定是否保留。<br>
+如果原来的文件中包含一些防火墙之类的默认配置，请根据需求决定是否保留。
+
 更改完后启用或者重启nftable.service即可：
 ```bash
 sudo systemctl enable --now nftables.service
@@ -598,8 +599,6 @@ echo '1022 15b6' > /sys/bus/pci/drivers/vfio-pci/new_id
 -device vfio-pci,host=0f:00.3,bus=swd4
 ```
 
-<br>
-
 **Hints:**
 - 带有ACS补丁的内核可以违反IOMMU Group作为最小直通单元的限制，
 	但有[潜在风险](https://vfio.blogspot.com/2014/08/iommu-groups-inside-and-out.html)。linux-zen内核包含了此补丁。
@@ -687,7 +686,7 @@ HOOKS=(... modconf ...) # HOOKS中要有modconf
 -vga std
 -display gtk
 ```
-注意只有vga显卡是跟PCI直通显卡兼容的。
+注意只有VGA显卡是跟PCI直通显卡兼容的。
 
 接下来还记得前面在配置CPU时的隐藏虚拟化选项吗？现在该它发挥作用了。<br>
 AMD的Windows驱动程序在检测到虚拟化环境时并不是像隔壁黄狗一样故意禁止你使用，而是会将直通的GPU当作是一块SR-IOV的vGPU。
@@ -717,7 +716,7 @@ echo 1 | sudo tee /sys/bus/pci/devices/0000:03:00.0/rom
 sudo cat /sys/bus/pci/devices/0000:03:00.0/rom > 7900xt.rom
 echo 0 | sudo tee /sys/bus/pci/devices/0000:03:00.0/rom
 ```
-以下2个文件分别是从TechPowerUp下载以及从sysfs提取的：
+以下两个文件分别是从TechPowerUp下载以及从sysfs提取的：
 ```
 252664.rom	7900xt.rom
 ```
@@ -802,7 +801,7 @@ dd if=/dev/zero of=dummy.rom bs=1M count=1
 	- 在内核启动参数中添加`video=vesafb:off video=efifb:off video=simplefb:off`后使用从sysfs提取的VBIOS。
 
 	除了其余正常工作的情况外，剩下的表现就是Linux启动时会出现大量`DMCUB Error`且没有显示信号输出。<br>
-	在没有启用multifunction时，journal中会出现以下信息：
+	在没有启用multifunction时，虚拟机的journal中会出现以下信息：
 	> Dec 28 06:53:25 archlinux kernel: amdgpu 0000:00:05.0: amdgpu: System can't access extended configuration space, please check!!
 
 	因此我的~~瞎猜~~推测是：在没有启用multifunction时，显卡直接连接到了根总线上，导致被认为这是一个RCiEP的PCI设备，
@@ -906,7 +905,7 @@ CONFIG_USB_XHCI_HCD=y
 ```
 那么恭喜你，你只能进行dynamic rebind。<br>
 原理很简单：内核模块的加载是在内核初始化完成后由systemd进行的。但内核在初始化过程中就会初始化设备并绑定驱动，
-如果某个设备驱动不是模块的话，其在systemd之前就已经被绑定了。
+如果某个设备驱动不是模块的话，其在systemd启动之前就已经被绑定了。
 
 使用下面的systemd service进行rebind：
 ```ini
@@ -973,10 +972,11 @@ Restart=on-abnormal
 [Install]
 WantedBy=default.target
 ```
-这里使用判断exit code的方式决定QEMU是否正常退出，再结合`/tmp/no-shutdown` file flag来确定是否关机。最后请确保`qemu.sh`有执行权限。
+这里使用判断exit code的方式决定QEMU是否正常退出，再结合`/tmp/no-shutdown` file flag来确定是否关机。<br>
+最后请确保`qemu.sh`有执行权限。
 
 ### Polkit Rules
-如果你现在直接尝试上面的windows.service那大概率是没法自动关机的，会被Access Denied。<br>
+如果你现在直接尝试上面的windows.service那大概率是没法自动关机的，会Access Denied。<br>
 平时在console的local user能直接`poweroff`关机应该是polkit开了洞。现在如果在service里试图关机，由于不是一个interactive环境，
 请求会被polkit直接拒绝。因此就像Udev Rules一样，我们也需要编写Polkit Rules来执行特权动作。
 ```javascript
