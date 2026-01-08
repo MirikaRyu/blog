@@ -45,6 +45,7 @@ hasCJKLanguage = true
 
 	[params.article]
 		math = true
+		headingAnchor = true
 		license = { enabled = true }
 
 	[params.footer]
@@ -52,6 +53,7 @@ hasCJKLanguage = true
 
 	[params.imageProcessing.cover]
 		enabled = false
+
 	[params.imageProcessing.content]
 		enabled = false
 
